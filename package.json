@@ -1,12 +1,15 @@
 {
   "name": "simplecov-result",
   "version": "1.0.0",
-  "description": "",
+  "description": "SimpleCov gem result parser",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "Kazuki Nishikawa <kzkn@users.noreply.github.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^26.4.2"
+  }
 }
