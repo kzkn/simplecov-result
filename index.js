@@ -11,6 +11,18 @@
 //   lines: [number | null]
 //   branches: { string => { string => number } }
 
+class FileList {
+  constructor(files) {
+    this.files = files
+  }
+
+  coverageStatistics() {
+    return {
+      line: CoverageStatistics.merge(this.files.map(f => f.coverageStatistics().line))
+    }
+  }
+}
+
 class SourceFile {
   constructor(filename, coverageData) {
     this.filename = filename
@@ -56,6 +68,14 @@ class CoverageStatistics {
   get percent() {
     return this.ratio * 100
   }
+
+  static merge(coverageStatistics) {
+    const [covered, missed] = coverageStatistics.reduce(([c, m], stats) => {
+      return [c + stats.covered, m + stats.missed]
+    }, [0, 0])
+
+    return new CoverageStatistics(covered, missed)
+  }
 }
 
 class Line {
@@ -78,5 +98,6 @@ class Line {
 }
 
 module.exports = {
-  SourceFile
+  FileList,
+  SourceFile,
 }

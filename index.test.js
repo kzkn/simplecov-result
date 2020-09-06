@@ -1,4 +1,4 @@
-const { SourceFile } = require('./index')
+const { SourceFile, FileList } = require('./index')
 
 test('SourceFile#coveredLines', () => {
   const cov = { lines: [0, 1, null] }
@@ -26,4 +26,18 @@ test('SourceFile#coverageStatistics', () => {
   expect(stats.line.total).toBe(2)
   expect(stats.line.ratio).toBe(0.5)
   expect(stats.line.percent).toBe(50)
+})
+
+test('FileList#coverageStatistics', () => {
+  const files = [
+    new SourceFile('foo.rb', { lines: [0, 1, null] } ),
+    new SourceFile('bar.rb', { lines: [1, 1] } ),
+  ]
+  const fileList = new FileList(files)
+  const stats = fileList.coverageStatistics()
+  expect(stats.line).not.toBeNull()
+  expect(stats.line.covered).toBe(3)
+  expect(stats.line.missed).toBe(1)
+  expect(stats.line.ratio).toBe(0.75)
+  expect(stats.line.percent).toBe(75)
 })
