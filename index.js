@@ -17,7 +17,7 @@ class SourceFile {
     this.coverageData = coverageData
   }
 
-  get lines() {
+  lines() {
     if (!this._lines) {
       this._lines = this.coverageData['lines'].map((c, i) => new Line(i + 1, c))
     }
@@ -25,11 +25,36 @@ class SourceFile {
   }
 
   coveredLines() {
-    return this.lines.filter(l => l.isCovered)
+    return this.lines().filter(l => l.isCovered)
   }
 
   missedLines() {
-    return this.lines.filter(l => l.isMissed)
+    return this.lines().filter(l => l.isMissed)
+  }
+
+  coverageStatistics() {
+    return {
+      line: new CoverageStatistics(this.coveredLines().length, this.missedLines().length)
+    }
+  }
+}
+
+class CoverageStatistics {
+  constructor(covered, missed) {
+    this.covered = covered
+    this.missed = missed
+  }
+
+  get total() {
+    return this.covered + this.missed
+  }
+
+  get ratio() {
+    return this.total === 0 ? 1 : this.covered / this.total
+  }
+
+  get percent() {
+    return this.ratio * 100
   }
 }
 
