@@ -11,6 +11,20 @@
 //   lines: [number | null]
 //   branches: { string => { string => number } }
 
+class Result {
+  constructor(commandName, timestamp, coverage) {
+    this.commandName = commandName
+    this.timestamp = timestamp
+    this.files = FileList.parse(coverage)
+  }
+
+  static parse(rawResult) {
+    const commandName = Object.keys(rawResult)[0];
+    const { coverage, timestamp } = rawResult[commandName]
+    return new Result(commandName, timestamp, coverage)
+  }
+}
+
 class FileList {
   constructor(files) {
     this.files = files
@@ -20,6 +34,17 @@ class FileList {
     return {
       line: CoverageStatistics.merge(this.files.map(f => f.coverageStatistics().line))
     }
+  }
+
+  get length() {
+    return this.files.length
+  }
+
+  static parse(coverage) {
+    const files = Object.entries(coverage).map(([filename, coverageData]) => {
+      return new SourceFile(filename, coverageData)
+    })
+    return new FileList(files)
   }
 }
 
@@ -100,4 +125,5 @@ class Line {
 module.exports = {
   FileList,
   SourceFile,
+  Result,
 }

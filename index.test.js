@@ -1,4 +1,4 @@
-const { SourceFile, FileList } = require('./index')
+const { SourceFile, FileList, Result } = require('./index')
 
 test('SourceFile#coveredLines', () => {
   const cov = { lines: [0, 1, null] }
@@ -40,4 +40,26 @@ test('FileList#coverageStatistics', () => {
   expect(stats.line.missed).toBe(1)
   expect(stats.line.ratio).toBe(0.75)
   expect(stats.line.percent).toBe(75)
+})
+
+test('Result.parse', () => {
+  const raw = {
+    "RSpec": {
+      "coverage": {
+        "foo.rb": {
+          "lines": [1, 1, null],
+        },
+        "bar.rb": {
+          "lines": [1, 0, 0],
+        },
+      },
+      "timestamp": 1598590411,
+    }
+  }
+
+  const result = Result.parse(raw)
+  expect(result.commandName).toBe('RSpec')
+  expect(result.timestamp).toBe(1598590411)
+  expect(result.files.length).toBe(2)
+  expect(result.files.coverageStatistics().line.ratio).toBe(0.6)
 })
