@@ -1,4 +1,4 @@
-const { SourceFile, FileList, Result } = require('../index')
+import { SourceFile, FileList, Result } from '../index'
 
 describe('SourceFile', () => {
   test('coveredLines', () => {
