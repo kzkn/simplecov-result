@@ -1,17 +1,30 @@
+type RawResultSet = {
+  [commandName: string]: RawResult;
+}
+
+type RawResult = {
+  coverage: { [filename: string]: CoverageData };
+  timestamp: number;
+}
+
+type CoverageData = {
+  lines: (number | null)[]
+}
+
 export class Result {
   commandName: string;
   timestamp: number;
   files: FileList;
 
-  constructor(commandName: string, timestamp: number, coverage: any) {
+  constructor(commandName: string, timestamp: number, coverage: RawResult['coverage']) {
     this.commandName = commandName
     this.timestamp = timestamp
     this.files = FileList.parse(coverage)
   }
 
-  static parse(rawResult: any): Result {
-    const commandName = Object.keys(rawResult)[0] as string;
-    const { coverage, timestamp } = rawResult[commandName] as { coverage: any, timestamp: number }
+  static parse(rawResult: RawResultSet): Result {
+    const commandName = Object.keys(rawResult)[0];
+    const { coverage, timestamp } = rawResult[commandName]
     return new Result(commandName, timestamp, coverage)
   }
 }
@@ -37,16 +50,12 @@ export class FileList {
     return this.files.length
   }
 
-  static parse(coverage: { [key: string]: CoverageData }): FileList {
+  static parse(coverage: RawResult['coverage']): FileList {
     const files = Object.entries(coverage).map(([filename, coverageData]) => {
       return new SourceFile(filename, coverageData)
     })
     return new FileList(files)
   }
-}
-
-type CoverageData = {
-  lines: (number | null)[]
 }
 
 export class SourceFile {
