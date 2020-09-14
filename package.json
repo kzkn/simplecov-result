@@ -4,12 +4,14 @@
   "description": "SimpleCov gem result parser",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc --project . --outDir ./dist"
   },
   "keywords": [],
   "author": "Kazuki Nishikawa <kzkn@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "typescript": "^4.0.2"
   }
 }
