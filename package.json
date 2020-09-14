@@ -1,8 +1,9 @@
 {
   "name": "simplecov-result",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "SimpleCov gem result parser",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc --project . --outDir ./dist"
