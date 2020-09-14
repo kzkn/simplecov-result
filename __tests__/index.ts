@@ -1,4 +1,4 @@
-import { SourceFile, FileList, Result } from '../index'
+import { SourceFile, FileList, Result } from '../src/index'
 
 describe('SourceFile', () => {
   test('coveredLines', () => {
