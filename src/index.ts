@@ -22,9 +22,10 @@ export class Result {
     this.files = FileList.parse(coverage)
   }
 
-  static parse(rawResult: RawResultSet): Result {
-    const commandName = Object.keys(rawResult)[0];
-    const { coverage, timestamp } = rawResult[commandName]
+  static parse(raw: any): Result {
+    const rawResultSet = raw as RawResultSet
+    const commandName = Object.keys(rawResultSet)[0];
+    const { coverage, timestamp } = rawResultSet[commandName]
     return new Result(commandName, timestamp, coverage)
   }
 }
